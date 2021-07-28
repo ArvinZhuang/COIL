@@ -143,7 +143,7 @@ def main():
     # Get datasets
     if training_args.do_train:
         train_dataset = GroupedMarcoTrainDataset(
-            data_args, data_args.train_path, tokenizer=tokenizer,
+            data_args, data_args.train_path, tokenizer=tokenizer, cache_dir=model_args.cache_dir,
         )
     else:
         train_dataset = None
@@ -189,6 +189,7 @@ def main():
             data_args.pred_path, tokenizer=tokenizer,
             q_max_len=data_args.q_max_len,
             p_max_len=data_args.p_max_len,
+            cache_dir=model_args.cache_dir
         )
         assert data_args.pred_id_file is not None
 
@@ -213,7 +214,7 @@ def main():
             raise NotImplementedError('Encoding with multi processes is not implemented.')
         from torch.utils.data import DataLoader
         encode_dataset = MarcoEncodeDataset(
-            data_args.encode_in_path, tokenizer, p_max_len=data_args.p_max_len
+            data_args.encode_in_path, tokenizer, p_max_len=data_args.p_max_len, cache_dir=model_args.cache_dir,
         )
         encode_loader = DataLoader(
             encode_dataset,

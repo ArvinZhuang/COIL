@@ -18,6 +18,7 @@ module load mvapich2
 for i in $(seq -f "%02g" 0 99)
 do
   python create_expanded_corpus_with_TILDE.py \
-    --output_dir corpus_TILDE \
-    --file_path corpus/split${i}
+    --output_dir corpus_TILDE_150 \
+    --topk 150 \
+    --corpus_path corpus/split${i}
 done

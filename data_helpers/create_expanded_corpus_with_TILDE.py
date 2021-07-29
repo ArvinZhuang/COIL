@@ -87,10 +87,10 @@ def main(args):
     model = BertLMHeadModel.from_pretrained("ielab/TILDE", cache_dir='./cache')
     tokenizer = BertTokenizer.from_pretrained('bert-base-uncased', cache_dir='./cache')
     model.to(DEVICE)
-    id_fout = open(f'{args.output_dir}/{args.file_path.split("/")[1]}', 'a+')
+    id_fout = open(f'{args.output_dir}/{args.corpus_path.split("/")[1]}', 'a+')
     _, bad_ids = clean_vacab(tokenizer)
 
-    encode_dataset = MarcoEncodeDataset(args.file_path, tokenizer)
+    encode_dataset = MarcoEncodeDataset(args.corpus_path, tokenizer)
     encode_loader = DataLoader(
         encode_dataset,
         batch_size=args.batch_size,
@@ -115,10 +115,10 @@ def main(args):
             passage_outputs = model(**batch,
                                     return_dict=True).logits[:, 0]
             passage_probs = torch.sigmoid(passage_outputs)
-            selected_128s = torch.topk(passage_probs, 128).indices.cpu().numpy()
+            selected = torch.topk(passage_probs, args.topk).indices.cpu().numpy()
 
         expansions = []
-        for i, selected_128 in enumerate(selected_128s):
+        for i, selected_128 in enumerate(selected):
             expand_term_ids = np.setdiff1d(np.setdiff1d(selected_128, passage_input_ids[i], assume_unique=True),
                                            bad_ids, assume_unique=True)
             expansions.append(expand_term_ids)
@@ -141,7 +141,9 @@ def main(args):
 if __name__ == "__main__":
     parser = ArgumentParser()
     parser.add_argument('--output_dir', required=True)
-    parser.add_argument('--file_path', required=True)
+    parser.add_argument('--corpus_path', required=True)
+    parser.add_argument('--topk', default=128, type=int, help='k tokens with highest likelihood to be expanded to the original document. '
+                                                              'NOTE: this is the number before filtering out expanded tokens that already in the original document')
     parser.add_argument('--batch_size', default=256, type=int)
     parser.add_argument('--num_workers', default=8, type=int)
     args = parser.parse_args()

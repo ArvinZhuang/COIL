@@ -37,6 +37,8 @@ for filename in sorted(os.listdir(args.input)):
             elif psg_tok_weight_dict[cur_tok_psg][cur_tok_id] < cur_tok_weight:
                 psg_tok_weight_dict[cur_tok_psg][cur_tok_id] = cur_tok_weight
 
+    if not os.path.exists(args.output):
+        os.makedirs(args.output)
     with open(f'{args.output}/{filename}', 'w') as f:
         for pid in sorted(list(set(tok_all_ids))):
             f.write(json.dumps({'id': str(pid), 'contents': '', 'vector': psg_tok_weight_dict[str(pid)]})+'\n')

@@ -2,6 +2,7 @@ import argparse
 import pickle
 from tqdm import tqdm
 import numpy as np
+import os
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--input', type=str, required=True)
@@ -37,6 +38,8 @@ for tok_id in tqdm(offset_dict):
             print(cur_tok_weight)
             psg_tok_weight_dict[cur_tok_psg][cur_tok_id] += cur_tok_weight
 
+if not os.path.exists(args.output):
+    os.makedirs(args.output)
 with open(args.output, 'w') as f:
     for pid in sorted(list(set(tok_all_ids))):
         query = []

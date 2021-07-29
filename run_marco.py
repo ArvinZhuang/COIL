@@ -240,7 +240,8 @@ def main():
                     cls, reps = model.encode(**batch)
                     encoded.append((cls.cpu(), reps.cpu()))
 
-        all_cls = torch.cat([x[0] for x in encoded]).numpy()
+        if not model_args.no_cls:
+            all_cls = torch.cat([x[0] for x in encoded]).numpy()
         all_reps = torch.cat([x[1] for x in encoded]).numpy()
 
         all_pids = []
@@ -265,14 +266,15 @@ def main():
                 tok_rep_dict[tok_id].extend(tok_rep)
                 tok_pid_dict[tok_id].extend([pid for _ in range(len(tok_rep))])
 
-        np.save(
-            os.path.join(data_args.encoded_save_path, f'cls_pids'),
-            np.array(all_pids)
-        )
-        np.save(
-            os.path.join(data_args.encoded_save_path, f'cls_reps'),
-            all_cls
-        )
+        if not model_args.no_cls:
+            np.save(
+                os.path.join(data_args.encoded_save_path, f'cls_pids'),
+                np.array(all_pids)
+            )
+            np.save(
+                os.path.join(data_args.encoded_save_path, f'cls_reps'),
+                all_cls
+            )
         offset_dict = {}
         tok_all_ids = []
         tok_all_reps = []

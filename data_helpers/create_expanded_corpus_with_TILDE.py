@@ -115,11 +115,11 @@ def main(args):
             passage_outputs = model(**batch,
                                     return_dict=True).logits[:, 0]
             passage_probs = torch.sigmoid(passage_outputs)
-            selected = torch.topk(passage_probs, args.topk).indices.cpu().numpy()
+            batch_selected = torch.topk(passage_probs, args.topk).indices.cpu().numpy()
 
         expansions = []
-        for i, selected_128 in enumerate(selected):
-            expand_term_ids = np.setdiff1d(np.setdiff1d(selected_128, passage_input_ids[i], assume_unique=True),
+        for i, selected in enumerate(batch_selected):
+            expand_term_ids = np.setdiff1d(np.setdiff1d(selected, passage_input_ids[i], assume_unique=True),
                                            bad_ids, assume_unique=True)
             expansions.append(expand_term_ids)
 

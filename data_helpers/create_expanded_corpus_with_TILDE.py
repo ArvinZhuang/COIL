@@ -86,7 +86,7 @@ class MarcoEncodeDataset(Dataset):
 def main(args):
     model = BertLMHeadModel.from_pretrained("ielab/TILDE", cache_dir='./cache')
     tokenizer = BertTokenizer.from_pretrained('bert-base-uncased', cache_dir='./cache')
-    model.to(DEVICE)
+    model.eval().to(DEVICE)
     id_fout = open(f'{args.output_dir}/{args.corpus_path.split("/")[1]}', 'a+')
     _, bad_ids = clean_vacab(tokenizer)
 

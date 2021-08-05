@@ -120,6 +120,7 @@ if __name__ == "__main__":
 # --do_encode \
 # --p_max_len 64 \
 # --no_sep \
+# --fp16 \
 # --pooling max \
 # --per_device_eval_batch_size 128 \
 # --dataloader_num_workers 12

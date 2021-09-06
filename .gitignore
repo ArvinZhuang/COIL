@@ -3,3 +3,8 @@
 *.gz
 *.json
 *.jsonl
+cache
+ckpt*
+data_helpers/corpus/
+data_helpers/corpus_d2q/
+data_helpers/corpus_TILDE/

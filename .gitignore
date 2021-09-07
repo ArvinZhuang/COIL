@@ -11,3 +11,4 @@ data_helpers/corpus_TILDE/
 msmarco_passage_unicoil_encoded_TILDE_200/
 msmarco_passage_unicoil_encoded_TILDE_200_decoded/
 queries/
+.DS_Store

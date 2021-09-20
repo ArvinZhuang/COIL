@@ -206,7 +206,7 @@ class UniCoilEncoder(PreTrainedModel):
 
 encoder = UniCoilQueryEncoder('ielab/unicoil-tilde200-msmarco-passage')
 
-with open("topics.msmarco-passage-v2.dev.tsv", 'r') as f, open('topics.msmarco-passage.v2-dev.unicoil.tilde.expansion.otf.tsv', 'w') as wf:
+with open("topics.msmarco-passage-v2.dev.tsv", 'r') as f, open('topics.msmarco-passage.v2-dev.unicoil.tilde.expansion.tsv', 'w') as wf:
     lines = f.readlines()
     for line in tqdm(lines):
         qid, text = line.split('\t')

@@ -28,7 +28,7 @@ import numpy as np
 import torch
 
 from arguments import ModelArguments, DataArguments, COILTrainingArguments as TrainingArguments
-from marco_datasets import GroupedMarcoTrainDataset, MarcoPredDataset, MarcoEncodeDataset
+from marco_datasets import GroupedMarcoTrainDataset, MarcoPredDataset, MarcoEncodeDataset, GroupedMarcoTrainDatasetV2
 from modeling import COIL
 from transformers import AutoConfig, AutoTokenizer
 from transformers import DataCollatorWithPadding
@@ -142,7 +142,7 @@ def main():
 
     # Get datasets
     if training_args.do_train:
-        train_dataset = GroupedMarcoTrainDataset(
+        train_dataset = GroupedMarcoTrainDatasetV2(
             data_args, data_args.train_path, tokenizer=tokenizer, cache_dir=model_args.cache_dir,
         )
     else:

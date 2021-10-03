@@ -28,7 +28,7 @@ import numpy as np
 import torch
 
 from arguments import ModelArguments, DataArguments, COILTrainingArguments as TrainingArguments
-from marco_datasets import GroupedMarcoTrainDataset, MarcoPredDataset, MarcoEncodeDataset, GroupedMarcoTrainDatasetV2
+from marco_datasets import GroupedMarcoTrainDataset, MarcoPredDataset, MarcoEncodeDataset, GroupedMarcoTrainDatasetV2, MarcoEncodeDatasetV2
 from modeling import COIL
 from transformers import AutoConfig, AutoTokenizer
 from transformers import DataCollatorWithPadding
@@ -213,7 +213,7 @@ def main():
         if training_args.local_rank > -1:
             raise NotImplementedError('Encoding with multi processes is not implemented.')
         from torch.utils.data import DataLoader
-        encode_dataset = MarcoEncodeDataset(
+        encode_dataset = MarcoEncodeDatasetV2(
             data_args.encode_in_path, tokenizer, p_max_len=data_args.p_max_len, cache_dir=model_args.cache_dir,
         )
         encode_loader = DataLoader(

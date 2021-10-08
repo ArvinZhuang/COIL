@@ -80,11 +80,11 @@ class UniCoilEncoderToSave(PreTrainedModel):
         if isinstance(module, torch.nn.Linear) and module.bias is not None:
             module.bias.data.zero_()
 
+
     def init_weights(self):
         self.bert.init_weights()
         model_dict = torch.load(os.path.join(self.config.name_or_path, 'model.pt'), map_location="cpu")
         self.load_state_dict(model_dict, strict=False)
-
 
     def forward(
             self,

@@ -142,7 +142,7 @@ def main():
 
     # Get datasets
     if training_args.do_train:
-        train_dataset = GroupedMarcoTrainDatasetV2(
+        train_dataset = GroupedMarcoTrainDataset(
             data_args, data_args.train_path, tokenizer=tokenizer, cache_dir=model_args.cache_dir,
         )
     else:
@@ -163,7 +163,7 @@ def main():
     # Training
     if training_args.do_train:
         trainer.train(
-            model_path=model_args.model_name_or_path if os.path.isdir(model_args.model_name_or_path) else None
+            model_path=model_args.model_name_or_path if os.path.isdir(model_args.model_name_or_path) else None,
         )
         trainer.save_model()
         # For convenience, we also re-save the tokenizer to the same directory,
@@ -213,7 +213,7 @@ def main():
         if training_args.local_rank > -1:
             raise NotImplementedError('Encoding with multi processes is not implemented.')
         from torch.utils.data import DataLoader
-        encode_dataset = MarcoEncodeDatasetV2(
+        encode_dataset = MarcoEncodeDataset(
             data_args.encode_in_path, tokenizer, p_max_len=data_args.p_max_len, cache_dir=model_args.cache_dir,
         )
         encode_loader = DataLoader(

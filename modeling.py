@@ -66,7 +66,7 @@ class COIL(nn.Module):
             reps = self.ln_tok(reps)
 
         if self.model_args.token_rep_relu:
-            reps = torch.relu(reps)
+            reps = torch.log(1 + torch.relu(reps))
 
         return cls, reps
 
@@ -86,8 +86,8 @@ class COIL(nn.Module):
             qry_reps, doc_reps = self.ln_tok(qry_reps), self.ln_tok(doc_reps)
 
         if self.model_args.token_rep_relu:
-            qry_reps = torch.relu(qry_reps)
-            doc_reps = torch.relu(doc_reps)
+            qry_reps = torch.log(1 + torch.relu(qry_reps))
+            doc_reps = torch.log(1 + torch.relu(doc_reps))
 
         # mask ingredients
         doc_input_ids: Tensor = doc_input['input_ids']
@@ -140,7 +140,6 @@ class COIL(nn.Module):
                 doc_reps, doc_input_ids,
                 qry_reps, qry_input_ids, qry_attention_mask
             )
-
             # remove padding and cls token
             if self.model_args.no_cls:
                 scores = tok_scores

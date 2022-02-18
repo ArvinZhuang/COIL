@@ -67,7 +67,9 @@ class DataArguments:
                     "than this will be truncated, sequences shorter will be padded."
         },
     )
-    document: bool = field(default=False)
+    document: bool = field(default=False
+                           )
+    typo_augment: bool = field(default=False, metadata={"help": "Whether to do typo query augmentation for training."})
 
     def __post_init__(self):
         if self.train_dir is not None:
